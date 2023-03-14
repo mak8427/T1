@@ -11,7 +11,7 @@ y = np.sin(X)  # target values
 
 
 # Split data into training and testing sets
-
+a=5
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.7, random_state=42)
 
 # Print the shape of the resulting arrays
