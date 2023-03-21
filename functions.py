@@ -88,3 +88,18 @@ def create_agent_data(agent_list):
         })
     return agent_data
 
+
+
+# Function to create a list of dictionaries from product_list
+def create_product_data(product_list):
+    product_data = []
+    for product in product_list:
+        product_data.append({
+            'cost_to_produce': product.cost_to_produce,
+            'selling_price': product.selling_price,
+            'number_produced': product.number_produced,
+            'number_sold': product.number_sold,
+            'seller_id': product.seller_id,
+            'quality_factor': product.quality_factor
+        })
+    return product_data
