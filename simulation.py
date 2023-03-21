@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from functions import *
 
 # Set mean and standard deviation
-mu, sigma = 600, 200
+mu, sigma = 400, 200
 
 # Generate random data from a left-skewed distribution using numpy
 data = np.random.gamma(6, 100, 1000000)

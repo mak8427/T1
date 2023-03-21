@@ -50,7 +50,7 @@ class consumer:
 
 
 def buy_product(agent_list, product_list):
-    #product_list.sort(key=lambda x: x.selling_price)
+    out_of_market=0
     for agent in agent_list:
         best = 0
         best_product = None
@@ -60,6 +60,7 @@ def buy_product(agent_list, product_list):
                 if tmp > best:
                     best = tmp
                     best_product = product.seller_id
+
         if best !=0 and best_product is not None:
             product_list[best_product].number_sold+=1
             if len (agent.agent_10y_history)<10:
@@ -68,12 +69,22 @@ def buy_product(agent_list, product_list):
                 agent.agent_10y_history.pop(0)
                 agent.agent_10y_history.append(best_product)
             agent.update_agent_preference()
+        else:
+            out_of_market+=1
+    print("Agents out of the market :",out_of_market)
 
 def compute_profit(product_list):
     for product in product_list:
-
         print("profit of product ",product.seller_id," is ",product.calculate_profit())
 
-
-
+# Function to create a list of dictionaries from agent_list
+def create_agent_data(agent_list):
+    agent_data = []
+    for agent in agent_list:
+        agent_data.append({
+            'capital': agent.capital,
+            'agent_10y_history': agent.agent_10y_history,
+            'agent_preference_seller': agent.agent_preference_seller
+        })
+    return agent_data
 
