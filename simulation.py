@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from functions import *
 
 # Set mean and standard deviation
-mu, sigma = 400, 200
+mu, sigma = 600, 200
 
 # Generate random data from a left-skewed distribution using numpy
 data = np.random.gamma(6, 100, 1000000)
@@ -17,7 +17,7 @@ data = (data * sigma) + mu
 #plt.show()
 
 #create 3 protucts with random values
-product_list=[Product(id=i) for i in range(3)]
+product_list=[Product(id=0),Product(id=1),Product(id=2)]
 agent_list=[consumer(data) for i in range(10000)]
 buy_product(agent_list,product_list)
 compute_profit(product_list)

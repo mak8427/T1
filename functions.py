@@ -6,8 +6,8 @@ import time
 
 class Product:
     def __init__(self,selling_markup=secrets.choice(range(300)),cost_to_produce=secrets.choice(range(1000)),number_produced=secrets.choice(range(5000))+2000,id=0):
-        self.cost_to_produce = secrets.choice(range(150,1000))
-        self.selling_price = secrets.choice(range(50,300))+cost_to_produce
+        self.cost_to_produce = secrets.choice(range(150,300))
+        self.selling_price = secrets.choice(range(50,100))+self.cost_to_produce
         self.number_produced=secrets.choice(range(2000,5000))+200
         self.number_sold=0
         self.seller_id=id
@@ -49,28 +49,29 @@ class consumer:
 
 
 
-def buy_product(agent_list,product_list):
-    product_list.sort(key=lambda x: x.selling_price)
+def buy_product(agent_list, product_list):
+    #product_list.sort(key=lambda x: x.selling_price)
     for agent in agent_list:
-        best=0
+        best = 0
+        best_product = None
         for product in product_list:
-            if agent.capital>product.selling_price:
-                tmp=agent.product_score(product)
+            if agent.capital > product.selling_price and product.number_sold < product.number_produced:
+                tmp = agent.product_score(product)
                 if tmp > best:
-                    best=tmp
-                    best_product=product.seller_id
-
-        product_list[best_product].number_sold+=1
-
-        if len (agent.agent_10y_history)<10:
-            agent.agent_10y_history.append(best_product)
-        if len(agent.agent_10y_history)<=10:
-            agent.agent_10y_history.pop(0)
-            agent.agent_10y_history.append(best_product)
-        agent.update_agent_preference()
+                    best = tmp
+                    best_product = product.seller_id
+        if best !=0 and best_product is not None:
+            product_list[best_product].number_sold+=1
+            if len (agent.agent_10y_history)<10:
+                agent.agent_10y_history.append(best_product)
+            if len(agent.agent_10y_history)<=10:
+                agent.agent_10y_history.pop(0)
+                agent.agent_10y_history.append(best_product)
+            agent.update_agent_preference()
 
 def compute_profit(product_list):
     for product in product_list:
+
         print("profit of product ",product.seller_id," is ",product.calculate_profit())
 
 
