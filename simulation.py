@@ -17,5 +17,9 @@ data = (data * sigma) + mu
 #plt.show()
 
 #create 3 protucts with random values
-product_list=[Product() for i in range(3)]
+product_list=[Product(id=i) for i in range(3)]
 agent_list=[consumer(data) for i in range(10000)]
+buy_product(agent_list,product_list)
+compute_profit(product_list)
+
+print("fine")
