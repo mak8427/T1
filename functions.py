@@ -1,5 +1,6 @@
 import secrets
 import math
+import traceback
 import numpy as np
 import matplotlib.pyplot as plt
 import time
@@ -12,14 +13,30 @@ class Product:
         self.number_sold=0
         self.seller_id=id
         self.quality_factor = self._calculate_quality_factor()
+        self.profit_history = []
 
 
     def calculate_profit(self):
-        return self.selling_price * self.number_sold - self.cost_to_produce * self.number_produced
+        profit=self.selling_price * self.number_sold - self.cost_to_produce * self.number_produced
+        self.profit_history.append(profit)
+        return profit
 
     def _calculate_quality_factor(self, w1=0.1, w0=-4.6):
         w_x = w0 + w1 * self.selling_price / 10
         return (10 / (1 + math.exp(-w_x))) + math.log10(self.selling_price)
+
+    def new_product(self):
+
+        self.cost_to_produce = secrets.choice(range(150,300))
+        self.selling_price = secrets.choice(range(50,100))+self.cost_to_produce
+        self.number_produced=secrets.choice(range(2000,5000))+200
+        self.number_sold=0
+        self.quality_factor = self._calculate_quality_factor()
+
+    def __str__(self):
+        return "Product: selling_price: {}, cost_to_produce: {}, number_produced: {}, number_sold: {}, seller_id: {}, quality_factor: {}".format(
+            self.selling_price, self.cost_to_produce, self.number_produced, self.number_sold, self.seller_id, self.quality_factor
+        )
 
 class consumer:
     def __init__(self,data):
@@ -49,9 +66,10 @@ class consumer:
 
 
 
-def buy_product(agent_list, product_list):
-    out_of_market=0
-    for agent in agent_list:
+import concurrent.futures
+
+def buy_product_for_agent(agent, product_list):
+    try:
         best = 0
         best_product = None
         for product in product_list:
@@ -61,17 +79,54 @@ def buy_product(agent_list, product_list):
                     best = tmp
                     best_product = product.seller_id
 
-        if best !=0 and best_product is not None:
-            product_list[best_product].number_sold+=1
-            if len (agent.agent_10y_history)<10:
-                agent.agent_10y_history.append(best_product)
-            if len(agent.agent_10y_history)<=10:
+        if best != 0 and best_product is not None:
+            product_list[best_product].number_sold += 1
+            agent.agent_10y_history.append(best_product)
+            if len(agent.agent_10y_history) > 10:
                 agent.agent_10y_history.pop(0)
-                agent.agent_10y_history.append(best_product)
             agent.update_agent_preference()
+            return 0
         else:
-            out_of_market+=1
-    print("Agents out of the market :",out_of_market)
+            return 1
+    except Exception as e:
+        print(f"Error in buy_product_for_agent for agent {agent}: {e}")
+        print(traceback.format_exc())
+        return -1
+import itertools
+
+def grouper(n, iterable, fillvalue=None):
+    args = [iter(iterable)] * n
+    return itertools.zip_longest(*args, fillvalue=fillvalue)
+
+def buy_product_for_agents_batch(agents_batch, product_list):
+    out_of_market = 0
+    for agent in agents_batch:
+        if agent is not None:
+            out_of_market += buy_product_for_agent(agent, product_list)
+    return out_of_market
+
+def buy_product_multiprocessed(agent_list, product_list, batch_size=10000):
+    out_of_market = 0
+
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        results = [executor.submit(buy_product_for_agents_batch, agents_batch, product_list) for agents_batch in grouper(batch_size, agent_list)]
+
+        for future in concurrent.futures.as_completed(results):
+            out_of_market += future.result()
+
+    print("Agents out of the market :", out_of_market)
+
+# Call the multiprocessed function
+
+
+# Call the multiprocessed function
+
+
+
+# Call the multithreaded function
+
+
+
 
 def compute_profit(product_list):
     for product in product_list:
