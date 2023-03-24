@@ -48,12 +48,9 @@ class consumer:
 
 
     def product_score(self,product):
-        score=0
         if product.selling_price>self.capital:
-            return score
-        score=score+product.quality_factor/product.selling_price * 50.55555
-        score=score*(0.7+self.agent_preference_seller[product.seller_id]*0.2+secrets.choice(range(10))*0.01)
-        return score
+            return 0
+        return (product.quality_factor/product.selling_price * 50.55555)*(0.7+self.agent_preference_seller[product.seller_id]*0.2+secrets.choice(range(10))*0.01)
 
     def capital_change(self,data):
         self.capital = secrets.choice(data)
@@ -94,36 +91,18 @@ def buy_product_for_agent(agent, product_list):
         return -1
 import itertools
 
-def grouper(n, iterable, fillvalue=None):
-    args = [iter(iterable)] * n
-    return itertools.zip_longest(*args, fillvalue=fillvalue)
 
-def buy_product_for_agents_batch(agents_batch, product_list):
+def buy_product_multiprocessed(agent_list, product_list, batch_size=100):
     out_of_market = 0
-    for agent in agents_batch:
-        if agent is not None:
-            out_of_market += buy_product_for_agent(agent, product_list)
-    return out_of_market
+    for agent in agent_list:
+        out_of_market += buy_product_for_agent(agent, product_list)
 
-def buy_product_multiprocessed(agent_list, product_list, batch_size=10000):
-    out_of_market = 0
 
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        results = [executor.submit(buy_product_for_agents_batch, agents_batch, product_list) for agents_batch in grouper(batch_size, agent_list)]
 
-        for future in concurrent.futures.as_completed(results):
-            out_of_market += future.result()
+
 
     print("Agents out of the market :", out_of_market)
 
-# Call the multiprocessed function
-
-
-# Call the multiprocessed function
-
-
-
-# Call the multithreaded function
 
 
 
