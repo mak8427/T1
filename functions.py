@@ -136,4 +136,4 @@ def create_product_data(product_list):
             'seller_id': product.seller_id,
             'quality_factor': product.quality_factor
         })
-    return product_data
+    return

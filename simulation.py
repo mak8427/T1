@@ -19,7 +19,7 @@ def Simulation():
     #create 3 protucts with random values
     product_list=[Product(id=0),Product(id=1),Product(id=2)]
     agent_list=[consumer(data) for i in range(10000)]
-    for x in range(100):
+    for x in range(10):
         s1=time.time()
 
         buy_product_multiprocessed(agent_list,product_list)
