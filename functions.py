@@ -89,22 +89,30 @@ def buy_product_for_agent(agent, product_list):
         print(f"Error in buy_product_for_agent for agent {agent}: {e}")
         print(traceback.format_exc())
         return -1
-import itertools
+
+
+def get_state(product_list,range_,with_agent=False ):
+    state = []
+    if with_agent==True:
+        for product in product_list:
+            if product != len(product_list):
+                state.append(range_index(product.cost_to_produce,range_))
+    print(state)
+    return state
+
+
+def range_index(price,range_):
+    for i in range(len(range_)):
+        if price>=range_[i] and price<range_[i+1]:
+            return i
+
 
 
 def buy_product(agent_list, product_list, batch_size=100):
     out_of_market = 0
     for agent in agent_list:
         out_of_market += buy_product_for_agent(agent, product_list)
-
-
-
-
-
     print("Agents out of the market :", out_of_market)
-
-
-
 
 
 def compute_profit(product_list):
@@ -121,6 +129,11 @@ def create_agent_data(agent_list):
             'agent_preference_seller': agent.agent_preference_seller
         })
     return agent_data
+
+
+
+
+
 
 
 

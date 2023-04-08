@@ -15,8 +15,8 @@ def get_state_space(agent_list, product_list,data):
         ranges.append(data[int(len(data)/10*i)])
     ranges.append(data[-1])
     print(ranges)
-    dim_space= (len(ranges)**3)*len(product_list)
-    return dim_space
+    dim_space= [len(ranges), len(ranges)]
+    return dim_space,ranges
 
 
 
