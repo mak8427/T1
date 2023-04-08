@@ -92,7 +92,7 @@ def buy_product_for_agent(agent, product_list):
 import itertools
 
 
-def buy_product_multiprocessed(agent_list, product_list, batch_size=100):
+def buy_product(agent_list, product_list, batch_size=100):
     out_of_market = 0
     for agent in agent_list:
         out_of_market += buy_product_for_agent(agent, product_list)

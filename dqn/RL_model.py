@@ -68,7 +68,7 @@ class MarketEnvironment:
         elif action == 3:
             self.product_list[product_id].selling_price *= 1.05
 
-        buy_product_multiprocessed(self.agent_list, self.product_list)
+        buy_product(self.agent_list, self.product_list)
         compute_profit(self.product_list)
 
         reward = self.compute_ranking(product_id)
