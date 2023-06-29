@@ -19,8 +19,24 @@ def get_state_space(agent_list, product_list,data):
     return dim_space,ranges
 
 
+def compute_reward(product_list):
+    reward=-1
+    best=0
+    v=product_list[0].profit_history[-1]
+    for product in product_list:
+        if product.profit_history[-1]>v:
+            v=product.profit_history[-1]
+            best=product.seller_id
+    if best==2:
+        reward+=1
+    if product_list[-1].profit_history[-1] < 0:
+        reward+=-1
+    if product_list[-1].profit_history[-1] < 0:
+        reward+= 1
 
 
+
+    return reward
 
 
 

@@ -6,10 +6,24 @@ import matplotlib.pyplot as plt
 import time
 
 class Product:
-    def __init__(self,selling_markup=secrets.choice(range(300)),cost_to_produce=secrets.choice(range(1000)),number_produced=secrets.choice(range(5000))+2000,id=0):
-        self.cost_to_produce = secrets.choice(range(150,300))
-        self.selling_price = secrets.choice(range(50,100))+self.cost_to_produce
-        self.number_produced=secrets.choice(range(2000,5000))+200
+    def __init__(self,selling_markup=secrets.choice(range(300)),cost_to_produce=secrets.choice(range(1000)),number_produced=secrets.choice(range(5000))+2000,id=0,agent=False):
+        if agent==False:
+            self.cost_to_produce = secrets.choice(range(0,1500))
+            self.selling_price = secrets.choice(range(50,500))+self.cost_to_produce
+            self.number_produced=secrets.choice(range(2000,5000))+200
+
+
+
+            self.cost_to_produce = secrets.choice(range(0,1500))
+            self.selling_price = 500+self.cost_to_produce
+            self.number_produced=3000
+
+
+        if agent==True:
+            self.cost_to_produce=cost_to_produce
+            self.selling_price=self.cost_to_produce + 100
+            self.number_produced= 3000
+
         self.number_sold=0
         self.seller_id=id
         self.quality_factor = self._calculate_quality_factor()
@@ -27,8 +41,8 @@ class Product:
 
     def new_product(self):
 
-        self.cost_to_produce = secrets.choice(range(150,300))
-        self.selling_price = secrets.choice(range(50,100))+self.cost_to_produce
+        self.cost_to_produce = secrets.choice(range(100,800))
+        self.selling_price = secrets.choice(range(50,200))+self.cost_to_produce
         self.number_produced=secrets.choice(range(2000,5000))+200
         self.number_sold=0
         self.quality_factor = self._calculate_quality_factor()
@@ -95,13 +109,14 @@ def get_state(product_list,range_,with_agent=False ):
     state = []
     if with_agent==True:
         for product in product_list:
-            if product != len(product_list):
+            if product.seller_id != len(product_list)-1:
                 state.append(range_index(product.cost_to_produce,range_))
-    print(state)
+
     return state
 
 
 def range_index(price,range_):
+
     for i in range(len(range_)):
         if price>=range_[i] and price<range_[i+1]:
             return i
@@ -112,12 +127,14 @@ def buy_product(agent_list, product_list, batch_size=100):
     out_of_market = 0
     for agent in agent_list:
         out_of_market += buy_product_for_agent(agent, product_list)
-    print("Agents out of the market :", out_of_market)
+    #print("Agents out of the market :", out_of_market)
 
 
 def compute_profit(product_list):
     for product in product_list:
-        print("profit of product ",product.seller_id," is ",product.calculate_profit())
+        profit=product.calculate_profit()
+        #print("profit of product ",product.seller_id," is ",profit)
+
 
 # Function to create a list of dictionaries from agent_list
 def create_agent_data(agent_list):
