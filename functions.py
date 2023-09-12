@@ -6,23 +6,28 @@ import matplotlib.pyplot as plt
 import time
 
 class Product:
-    def __init__(self,selling_markup=secrets.choice(range(300)),cost_to_produce=secrets.choice(range(1000)),number_produced=secrets.choice(range(5000))+2000,id=0,agent=False):
+    def __init__(self,selling_markup=secrets.choice(range(300)),cost_to_produce=secrets.choice(range(1500)),number_produced=secrets.choice(range(5000))+2000,id=0,agent=False):
         if agent==False:
-            self.cost_to_produce = secrets.choice(range(0,1500))
-            self.selling_price = secrets.choice(range(50,500))+self.cost_to_produce
-            self.number_produced=secrets.choice(range(2000,5000))+200
 
-
-
-            self.cost_to_produce = secrets.choice(range(0,1500))
-            self.selling_price = 500+self.cost_to_produce
-            self.number_produced=3000
+            self.cost_to_produce = secrets.choice(range(200,400))
+            self.selling_price = 100+self.cost_to_produce
+            self.number_produced= 500
 
 
         if agent==True:
-            self.cost_to_produce=cost_to_produce
-            self.selling_price=self.cost_to_produce + 100
-            self.number_produced= 3000
+            rnd=False
+            if rnd==True:
+                self.cost_to_produce = cost_to_produce
+                self.selling_price = 200 + self.cost_to_produce
+                self.number_produced = secrets.choice(range(0,3000))
+
+            else:
+                self.cost_to_produce=cost_to_produce
+                self.selling_price=self.cost_to_produce + 100
+                self.number_produced= 500
+
+
+
 
         self.number_sold=0
         self.seller_id=id

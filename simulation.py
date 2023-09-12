@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from functions import *
 import pandas as pd
 from RL import *
+
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 def Simulation():
     # Set mean and standard deviation
     mu, sigma = 450, 200
@@ -19,7 +22,7 @@ def Simulation():
 
     #create 3 protucts with random values
     product_list=[Product(id=0),Product(id=1),Product(id=2)]
-    agent_list=[consumer(data) for i in range(10000)]
+    agent_list=[consumer(data) for i in range(3000)]
 
 
     #create the q table
@@ -69,6 +72,9 @@ def Simulation():
         for product in product_list:
             if product.seller_id!=2:
                 product.new_product()
+
+        if x%100==0:
+            print("iteration: ", x)
 
         #print("proportion of time spent in buy_product: ", s2)
     for product in product_list:
