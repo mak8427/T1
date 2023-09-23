@@ -19,15 +19,11 @@ class Product:
             if rnd==True:
                 self.cost_to_produce = cost_to_produce
                 self.selling_price = 200 + self.cost_to_produce
-                self.number_produced = secrets.choice(range(0,3000))
-
+                #self.number_produced = secrets.choice(range(0,3000))
             else:
                 self.cost_to_produce=cost_to_produce
-                self.selling_price=self.cost_to_produce + 100
+                self.selling_price=self.cost_to_produce + secrets.choice(range(50,100))
                 self.number_produced= 500
-
-
-
 
         self.number_sold=0
         self.seller_id=id
@@ -46,9 +42,12 @@ class Product:
 
     def new_product(self):
 
-        self.cost_to_produce = secrets.choice(range(100,800))
-        self.selling_price = secrets.choice(range(50,200))+self.cost_to_produce
-        self.number_produced=secrets.choice(range(2000,5000))+200
+        #self.cost_to_produce = secrets.choice(range(100,600))
+        #self.selling_price = secrets.choice(range(50,100))+self.cost_to_produce
+        #self.number_produced=secrets.choice(range(2000,5000))+200
+        self.cost_to_produce = secrets.choice(range(300, 600))
+        self.selling_price =secrets.choice(range(50,100))+self.cost_to_produce
+        self.number_produced = 500
         self.number_sold=0
         self.quality_factor = self._calculate_quality_factor()
 
